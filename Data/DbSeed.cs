@@ -59,13 +59,30 @@ public static class DbSeed
         context.Products.AddRange(products);
         context.SaveChanges();
 
+        // Seed Services
+        var services = new[]
+        {
+            new Service { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Name = "Web Development", Price = 2500.00m, UserId = users[0].Id },
+            new Service { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Name = "Mobile App Design", Price = 1800.00m, UserId = users[1].Id },
+            new Service { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Name = "SEO Optimization", Price = 800.00m, UserId = users[2].Id },
+            new Service { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Name = "Digital Marketing", Price = 1200.00m, UserId = users[0].Id },
+            new Service { Id = Guid.NewGuid(), CreatedAt = DateTime.UtcNow, Name = "Data Analysis", Price = 1500.00m, UserId = users[1].Id }
+        };
+
+        context.Services.AddRange(services);
+        context.SaveChanges();
+
         // Seed UserActions using static values
         var productEntityTypeId = EntityType.Product.Id;
+        var serviceEntityTypeId = EntityType.Service.Id;
         var viewActionTypeId = ActionType.View.Id;
         var addToCartActionTypeId = ActionType.AddToCard.Id;
+        var commentActionTypeId = ActionType.Comment.Id;
+        var reactActionTypeId = ActionType.React.Id;
 
         var userActions = new[]
         {
+            // Product views
             new UserAction 
             { 
                 Id = Guid.NewGuid(), 
@@ -77,6 +94,7 @@ public static class DbSeed
                 EntityTypeId = productEntityTypeId,
                 Credits = 10
             },
+            // Add to cart
             new UserAction 
             { 
                 Id = Guid.NewGuid(), 
@@ -87,6 +105,64 @@ public static class DbSeed
                 EntityId = products[1].Id,
                 EntityTypeId = productEntityTypeId,
                 Credits = 25
+            },
+            // Comments
+            new UserAction 
+            { 
+                Id = Guid.NewGuid(), 
+                CreatedAt = DateTime.UtcNow, 
+                UserId = users[2].Id, 
+                ActionTypeId = commentActionTypeId,
+                StatusId = Guid.NewGuid(),
+                EntityId = products[0].Id,
+                EntityTypeId = productEntityTypeId,
+                Credits = 5
+            },
+            // Service reactions
+            new UserAction 
+            { 
+                Id = Guid.NewGuid(), 
+                CreatedAt = DateTime.UtcNow, 
+                UserId = users[0].Id, 
+                ActionTypeId = reactActionTypeId,
+                StatusId = Guid.NewGuid(),
+                EntityId = services[0].Id,
+                EntityTypeId = serviceEntityTypeId,
+                Credits = 15
+            },
+            new UserAction 
+            { 
+                Id = Guid.NewGuid(), 
+                CreatedAt = DateTime.UtcNow, 
+                UserId = users[1].Id, 
+                ActionTypeId = reactActionTypeId,
+                StatusId = Guid.NewGuid(),
+                EntityId = services[1].Id,
+                EntityTypeId = serviceEntityTypeId,
+                Credits = 20
+            },
+            // Cross-user product views (for UserProductView metric)
+            new UserAction 
+            { 
+                Id = Guid.NewGuid(), 
+                CreatedAt = DateTime.UtcNow, 
+                UserId = users[1].Id, 
+                ActionTypeId = viewActionTypeId,
+                StatusId = Guid.NewGuid(),
+                EntityId = products[0].Id, // user[0]'s product viewed by user[1]
+                EntityTypeId = productEntityTypeId,
+                Credits = 8
+            },
+            new UserAction 
+            { 
+                Id = Guid.NewGuid(), 
+                CreatedAt = DateTime.UtcNow, 
+                UserId = users[2].Id, 
+                ActionTypeId = viewActionTypeId,
+                StatusId = Guid.NewGuid(),
+                EntityId = products[0].Id, // user[0]'s product viewed by user[2]
+                EntityTypeId = productEntityTypeId,
+                Credits = 12
             }
         };
 

@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<Service> Services { get; set; }
     public DbSet<UserAction> UserActions { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<ActionTypeEntity> ActionTypes { get; set; }
@@ -47,6 +48,13 @@ public class AppDbContext : DbContext
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
             entity.ToTable("EntityTypes");
+        });
+
+        modelBuilder.Entity<Service>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
         });
     }
 }
