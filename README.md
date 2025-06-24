@@ -98,7 +98,7 @@ public class UserStats
 
 ### Строка подключения:
 ```
-Server=localhost;Port=5433;Database=lc;Uid=postgres;Pwd=mysecretpassword;Timeout=15;
+Server=liseller-prod.postgres.database.azure.com;Port=5432;Database=livecoding;Uid=livecoder;Pwd=LC21341da#;Timeout = 40;SslMode=Require;
 ```
 
 ### Команды для запуска:
